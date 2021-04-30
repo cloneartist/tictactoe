@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe/custom_dialog.dart';
 import 'package:tictactoe/game_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,6 +9,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 List<GameButton> buttonList;
+var player1;
+var player2;
+var activePlayer;
 @override
   void initState() {
     
@@ -15,6 +19,11 @@ List<GameButton> buttonList;
     buttonList = doInit();
   }
   List<GameButton> doInit() {
+      player1 = new List();
+      player2 = new List();
+      activePlayer =1;
+
+
       var gameButton = <GameButton>[
         new GameButton(id: 1),
         new GameButton(id: 2),
@@ -31,6 +40,101 @@ List<GameButton> buttonList;
 
   }
 
+  void playGame(GameButton gb){
+setState(() {
+  if (activePlayer ==1){
+      gb.text="X";
+      gb.bg= Colors.red;
+      activePlayer =2;
+      player1.add(gb.id);
+  }else{
+    gb.text="O";
+    gb.bg=Colors.black;
+    activePlayer=1;
+    player2.add(gb.id);
+  }
+  gb.enabled=false;
+  checkWinner();
+});
+  }
+void checkWinner(){
+  var winner = -1;
+  if(player1.contains(1)&&player1.contains(2)&&player1.contains(3)){
+    winner=1;
+  }
+  if(player2.contains(1)&&player2.contains(2)&&player2.contains(3)){
+    winner=1;
+  }
+
+    if (player1.contains(4) && player1.contains(5) && player1.contains(6)) {
+      winner = 1;
+    }
+    if (player2.contains(4) && player2.contains(5) && player2.contains(6)) {
+      winner = 2;
+    }
+
+    if (player1.contains(7) && player1.contains(8) && player1.contains(9)) {
+      winner = 1;
+    }
+    if (player2.contains(7) && player2.contains(8) && player2.contains(9)) {
+      winner = 2;
+    }
+
+    if (player1.contains(1) && player1.contains(4) && player1.contains(7)) {
+      winner = 1;
+    }
+    if (player2.contains(1) && player2.contains(4) && player2.contains(7)) {
+      winner = 2;
+    }
+
+    if (player1.contains(2) && player1.contains(5) && player1.contains(8)) {
+      winner = 1;
+    }
+    if (player2.contains(2) && player2.contains(5) && player2.contains(8)) {
+      winner = 2;
+    }
+
+    if (player1.contains(3) && player1.contains(6) && player1.contains(9)) {
+      winner = 1;
+    }
+    if (player2.contains(3) && player2.contains(6) && player2.contains(9)) {
+      winner = 2;
+    }
+    if (player1.contains(1) && player1.contains(5) && player1.contains(9)) {
+      winner = 1;
+    }
+    if (player2.contains(1) && player2.contains(5) && player2.contains(9)) {
+      winner = 2;
+    }
+
+    if (player1.contains(3) && player1.contains(5) && player1.contains(7)) {
+      winner = 1;
+    }
+    if (player2.contains(3) && player2.contains(5) && player2.contains(7)) {
+      winner = 2;
+    }
+    if (winner!=-1){
+      if(winner==1){
+  showDialog(
+    context: context, 
+  builder:(_)=> new CustomDialog("Player 1 Won","Press reset Button to start again", resetGame));
+      }
+      else{
+        showDialog(
+    context: context, 
+  builder:(_)=> new CustomDialog("Player 2 Won","Press reset Button to start again", resetGame));
+
+      }
+    }
+  
+  }
+
+void resetGame(){
+if(Navigator.canPop(context)){Navigator.pop(context);}
+setState(() {
+  buttonList=doInit();
+});
+}
 
 
   @override
@@ -51,7 +155,7 @@ List<GameButton> buttonList;
            height: 100,
            child: new RaisedButton(
              padding: const EdgeInsets.all(8),
-             onPressed: null,
+             onPressed:  buttonList[i].enabled?()=> playGame(buttonList[i]):null,
              child: new Text(buttonList[i].text,
              style: new TextStyle(
                color: Colors.white, fontSize: 20),
