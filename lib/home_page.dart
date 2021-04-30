@@ -142,31 +142,50 @@ setState(() {
     return Scaffold(
       appBar: new AppBar(title: new Text('Tic Tac Toe')
       ),
-      body: new GridView.builder(
-        padding: const EdgeInsets.all(10.0),
-        itemCount: buttonList.length,
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1,
-          crossAxisSpacing: 9,
-          mainAxisSpacing: 9,),
-         itemBuilder: (context,i)=>new SizedBox(
-           width: 100,
-           height: 100,
-           child: new RaisedButton(
-             padding: const EdgeInsets.all(8),
-             onPressed:  buttonList[i].enabled?()=> playGame(buttonList[i]):null,
-             child: new Text(buttonList[i].text,
-             style: new TextStyle(
-               color: Colors.white, fontSize: 20),
+      body: new Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          
+          Expanded(
+            child: new GridView.builder(
+            padding: const EdgeInsets.all(10.0),
+            itemCount: buttonList.length,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1,
+              crossAxisSpacing: 9,
+              mainAxisSpacing: 9,),
+             itemBuilder: (context,i)=>new SizedBox(
+               width: 100,
+               height: 100,
+               child: new RaisedButton(
+                 padding: const EdgeInsets.all(8),
+                 onPressed:  buttonList[i].enabled?()=> playGame(buttonList[i]):null,
+                 child: new Text(buttonList[i].text,
+                 style: new TextStyle(
+                   color: Colors.white, fontSize: 20),
 
-             ),
-             color: buttonList[i].bg,
-             disabledColor: buttonList[i].bg,
-             ),
-             
-           ),   
-             ),
+                 ),
+                 color: buttonList[i].bg,
+                 disabledColor: buttonList[i].bg,
+                 ),
+                 
+               ),   
+                 ),
+          ),
+          new RaisedButton(
+            child: new Text(
+              "Reset",
+              style: new TextStyle(color: Colors.white,fontSize:20),
+            ),
+            color: Colors.red,
+            padding: const EdgeInsets.all(20),
+            onPressed: resetGame),
+          
+          ],
+    
+      ),
             
              );
         
