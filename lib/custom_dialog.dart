@@ -13,9 +13,11 @@ class CustomDialog extends StatelessWidget {
     return AlertDialog(
       title: new Text(title),
       content: new Text(content),
-      
+      shape:RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0),
+    ) ,
       actions: <Widget>[
-        new FlatButton(onPressed: callback, color: Colors.white,
+        TextButton(onPressed: callback, 
         child: new Text(actionText),)
       ],
     );

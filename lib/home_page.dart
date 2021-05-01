@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tictactoe/custom_dialog.dart';
 import 'package:tictactoe/game_button.dart';
@@ -19,8 +20,8 @@ var activePlayer;
     buttonList = doInit();
   }
   List<GameButton> doInit() {
-      player1 = new List();
-      player2 = new List();
+      player1 = new List<int>.empty(growable: true);
+      player2 = new List<int>.empty(growable: true);
       activePlayer =1;
 
 
@@ -40,7 +41,7 @@ var activePlayer;
 
   }
 
-  void playGame(GameButton gb){
+void playGame(GameButton gb){
 setState(() {
   if (activePlayer ==1){
       gb.text="X";
@@ -54,10 +55,35 @@ setState(() {
     player2.add(gb.id);
   }
   gb.enabled=false;
-  checkWinner();
+  int winner =checkWinner();
+  if(winner == -1){
+    if(buttonList.every((p) =>p.text!="")){
+      showDialog(context: context, builder:(_)=>new CustomDialog("Game Tied", "Press the reset button to start again", resetGame));
+    }
+    else{
+      // ignore: unnecessary_statements
+      activePlayer==2?autoPlay():null;
+    }
+  }
 });
   }
-void checkWinner(){
+
+  void autoPlay(){
+    var emptyCells = new List<int>.empty(growable: true);
+    var list=new List.generate(9, (i) => i+1);
+    for (var cellID in list){
+if(!(player1.contains(cellID)||player2.contains(cellID))){
+emptyCells.add(cellID);
+}
+}
+
+var r = new Random();
+var randIndex = r.nextInt(emptyCells.length-1);
+var cellID = emptyCells[randIndex];
+int i= buttonList.indexWhere((p) => p.id==cellID);
+playGame(buttonList[i]);
+  }
+int checkWinner(){
   var winner = -1;
   if(player1.contains(1)&&player1.contains(2)&&player1.contains(3)){
     winner=1;
@@ -126,7 +152,7 @@ void checkWinner(){
 
       }
     }
-  
+  return winner;
   }
 
 void resetGame(){
@@ -135,18 +161,18 @@ setState(() {
   buttonList=doInit();
 });
 }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(title: new Text('Tic Tac Toe')
+      appBar: new AppBar(title: new Text('Tic Tac Toe',),
+      elevation: 0,
+      centerTitle: true,
       ),
-      body: new Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          
+          SizedBox(width: 30,height: 125,),
           Expanded(
             child: new GridView.builder(
             padding: const EdgeInsets.all(10.0),
@@ -159,42 +185,38 @@ setState(() {
              itemBuilder: (context,i)=>new SizedBox(
                width: 100,
                height: 100,
-               child: new RaisedButton(
-                 padding: const EdgeInsets.all(8),
-                 onPressed:  buttonList[i].enabled?()=> playGame(buttonList[i]):null,
-                 child: new Text(buttonList[i].text,
-                 style: new TextStyle(
+               child: new ElevatedButton(
+                 onPressed: buttonList[i].enabled?()=> playGame(buttonList[i]):null, 
+                 style:  ButtonStyle(
+                  
+                   
+                   padding:  MaterialStateProperty.all(EdgeInsets.all(8)),
+                   backgroundColor: MaterialStateProperty.all(buttonList[i].bg),
+                 ),
+                 child: Text(buttonList[i].text,
+                 style: TextStyle(
                    color: Colors.white, fontSize: 20),
-
-                 ),
-                 color: buttonList[i].bg,
-                 disabledColor: buttonList[i].bg,
-                 ),
-                 
+                   ),
+                   ),  
                ),   
                  ),
           ),
-          new RaisedButton(
+          new ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all( Colors.red),
+              padding: MaterialStateProperty.all(EdgeInsets.all(15))
+            ),
             child: new Text(
               "Reset",
               style: new TextStyle(color: Colors.white,fontSize:20),
             ),
-            color: Colors.red,
-            padding: const EdgeInsets.all(20),
             onPressed: resetGame),
           
           ],
     
       ),
-            
-             );
-        
-
+   );
   }
-
-  
-
-
-  }
+}
 
 
