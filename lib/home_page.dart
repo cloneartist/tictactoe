@@ -82,7 +82,7 @@ setState(() {
               emptyCells.add(cellID);
             }
     }
-  
+
     var r = new Random();
     var randIndex = r.nextInt(emptyCells.length-1);
     var cellID = emptyCells[randIndex];
@@ -172,11 +172,6 @@ setState(() {
     return Scaffold(
       backgroundColor: Colors.white,
       
-      // appBar: new AppBar(title: new Text('Tic Tac Toe',),
-      // elevation: 5,
-      // centerTitle: true,
-      // ),
-      
       body: Column(
         
         mainAxisAlignment: MainAxisAlignment.start,
@@ -213,31 +208,7 @@ setState(() {
                   child: Text(buttonList[i].text,style: TextStyle(foreground: Paint()..shader=linearGradient,letterSpacing: 20,fontSize: 100,height: 1.07),),
                  
                 ),
-        //          child: new TextButton(
-                   
-        //            onPressed: buttonList[i].enabled?()=> playGame(buttonList[i]):null, 
-        //            style:  ButtonStyle(
-        //             //  shadowColor: MaterialStateProperty.all(Colors.accents),
-        //             //  side: MaterialStateProperty.all(BorderSide(color:Colors.red,width: 5)),
-        //             shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(14),
-        //           )) ,
-        //              padding:  MaterialStateProperty.all(EdgeInsets.all(8)),
-        //              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        //   (Set<MaterialState> states) {
-        //     if (states.contains(MaterialState.pressed))
-        //       return buttonList[i].bg;
-        //     else if (states.contains(MaterialState.disabled))
-        //       return buttonList[i].bg;
-        //     return Colors.white; // Use the component's default.
-        //   },
-        // ),
-                     
-        //            ),
-        //            child: Text(buttonList[i].text,
-        //            style: TextStyle(
-        //              color: Colors.white, fontSize: 20),
-        //              ),
-        //              ),  
+       
                  ),   
                    ),
             ),
