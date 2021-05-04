@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tictactoe/custom_dialog.dart';
 import 'package:tictactoe/game_button.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -11,9 +11,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 List<GameButton> buttonList;
 var player1;
-final Shader linearGradient = LinearGradient(
-  colors: <Color>[Color(0xffDA44bb), Color(0xff8921aa)],
-).createShader(Rect.fromLTWH(7.0, 3.0, 200.0, 70.0));
 var player2;
 var activePlayer;
 @override
@@ -71,23 +68,20 @@ setState(() {
 });
   }
 
-  void autoPlay()
-  {
+  void autoPlay(){
     var emptyCells = new List<int>.empty(growable: true);
     var list=new List.generate(9, (i) => i+1);
-    for (var cellID in list)
-    {
-        if(!(player1.contains(cellID)||player2.contains(cellID)))
-            {
-              emptyCells.add(cellID);
-            }
-    }
-  
-    var r = new Random();
-    var randIndex = r.nextInt(emptyCells.length-1);
-    var cellID = emptyCells[randIndex];
-    int i= buttonList.indexWhere((p) => p.id==cellID);
-    playGame(buttonList[i]);
+    for (var cellID in list){
+if(!(player1.contains(cellID)||player2.contains(cellID))){
+emptyCells.add(cellID);
+}
+}
+
+var r = new Random();
+var randIndex = r.nextInt(emptyCells.length-1);
+var cellID = emptyCells[randIndex];
+int i= buttonList.indexWhere((p) => p.id==cellID);
+playGame(buttonList[i]);
   }
 int checkWinner(){
   var winner = -1;
@@ -170,86 +164,51 @@ setState(() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      
-      // appBar: new AppBar(title: new Text('Tic Tac Toe',),
-      // elevation: 5,
-      // centerTitle: true,
-      // ),
-      
+      appBar: new AppBar(title: new Text('Tic Tac Toe',),
+      elevation: 0,
+      centerTitle: true,
+      ),
       body: Column(
-        
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          
-          SizedBox(width: 30,height: 100,),
-          new Column(
-              children: [new NeumorphicText("Tic-Tac-Toe",style: NeumorphicStyle(
-                depth: 4,color: Color(0xff8921aa)
-              ),
-              textStyle: NeumorphicTextStyle(fontSize: 30),),
-              ],
-          ),
-          SizedBox(width: 30,height: 50,),
+          SizedBox(width: 30,height: 125,),
           Expanded(
-            child: Container(
-              child: new GridView.builder(
-                
-              padding: const EdgeInsets.all(10.0),
-              itemCount: buttonList.length,
-              gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1,
-                crossAxisSpacing: 9,
-                mainAxisSpacing: 9,),
-               itemBuilder: (context,i)=>new SizedBox(
-                child:new NeumorphicButton(
-                  style: NeumorphicStyle(
-                    color: Colors.white,
-                    shape: NeumorphicShape.flat,
-                  ),
-                  onPressed: buttonList[i].enabled?()=> playGame(buttonList[i]):null, 
-                  child: Text(buttonList[i].text,style: TextStyle(foreground: Paint()..shader=linearGradient,letterSpacing: 20,fontSize: 100,height: 1.07),),
-                 
-                ),
-        //          child: new TextButton(
+            child: new GridView.builder(
+            padding: const EdgeInsets.all(10.0),
+            itemCount: buttonList.length,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1,
+              crossAxisSpacing: 9,
+              mainAxisSpacing: 9,),
+             itemBuilder: (context,i)=>new SizedBox(
+               width: 100,
+               height: 100,
+               child: new ElevatedButton(
+                 onPressed: buttonList[i].enabled?()=> playGame(buttonList[i]):null, 
+                 style:  ButtonStyle(
+                  
                    
-        //            onPressed: buttonList[i].enabled?()=> playGame(buttonList[i]):null, 
-        //            style:  ButtonStyle(
-        //             //  shadowColor: MaterialStateProperty.all(Colors.accents),
-        //             //  side: MaterialStateProperty.all(BorderSide(color:Colors.red,width: 5)),
-        //             shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(14),
-        //           )) ,
-        //              padding:  MaterialStateProperty.all(EdgeInsets.all(8)),
-        //              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        //   (Set<MaterialState> states) {
-        //     if (states.contains(MaterialState.pressed))
-        //       return buttonList[i].bg;
-        //     else if (states.contains(MaterialState.disabled))
-        //       return buttonList[i].bg;
-        //     return Colors.white; // Use the component's default.
-        //   },
-        // ),
-                     
-        //            ),
-        //            child: Text(buttonList[i].text,
-        //            style: TextStyle(
-        //              color: Colors.white, fontSize: 20),
-        //              ),
-        //              ),  
-                 ),   
+                   padding:  MaterialStateProperty.all(EdgeInsets.all(8)),
+                   backgroundColor: MaterialStateProperty.all(buttonList[i].bg),
+                 ),
+                 child: Text(buttonList[i].text,
+                 style: TextStyle(
+                   color: Colors.white, fontSize: 20),
                    ),
-            ),
+                   ),  
+               ),   
+                 ),
           ),
           new ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all( Colors.white),
+              backgroundColor: MaterialStateProperty.all( Colors.red),
               padding: MaterialStateProperty.all(EdgeInsets.all(15))
             ),
             child: new Text(
               "Reset",
-              style: new TextStyle(color: Color(0xff8921aa),fontSize:20),
+              style: new TextStyle(color: Colors.white,fontSize:20),
             ),
             onPressed: resetGame),
           
