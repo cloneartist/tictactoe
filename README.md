@@ -1,4 +1,4 @@
-# tictactoe
+# Tic-Tac-Toe
 
-A new Flutter project.
+This is a simple tic-tac-toe game made in flutter.
 
